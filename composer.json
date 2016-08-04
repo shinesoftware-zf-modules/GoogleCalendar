@@ -1,0 +1,29 @@
+{
+  "name": "shinesoftware-zf-modules/googlecalendar",
+  "description": "This module catches all information from the google calendar service by its API.",
+  "license": "BSD-2-Clause",
+  "type": "library",
+  "minimum-stability": "dev",
+  "keywords": [
+    "zf2"
+  ],
+  "homepage": "http://github.com/shinesoftware-zf-modules/GoogleCalendar",
+  "authors": [
+    {
+      "name": "Michelangelo Turillo",
+      "email": "info@shinesoftware.com",
+      "homepage": "http://shinesoftware.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4"
+  },
+  "autoload": {
+    "psr-0": {
+      "GoogleCalendar": "src/"
+    },
+    "classmap": [
+      "./Module.php"
+    ]
+  }
+}

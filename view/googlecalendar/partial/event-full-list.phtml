@@ -1,0 +1,48 @@
+
+<?php if(is_object($this->events) && is_object($this->profile)): ?>
+    <h3><?php echo $this->translate('Your Google Calendar Events') ?> <small><?php echo $this->translate('Synced events')?></small></h3>
+    <p><?php echo $this->translate('Here you can see events that we will be synced every 5 minutes')?></p>
+    <p class="text-right"><a href="/google" class="btn btn-xs btn-info"><?php echo $this->translate('Connect Google Calendar')?></a></p>
+    <ul class="list-group">
+    <?php foreach ($this->events as $event): ?>
+        <?php if("cancelled" != $event->getStatus()): ?>
+            <li class="list-group-item">
+                <div class="col-lg-8">
+                    <h4><?php echo $event->getSummary() ?> <small><?php echo $event->getStatus()?></small></h4>
+                    
+                    <span class="label label-success">
+                        <?php 
+                            if($event->getStart()){
+                                echo $this->datetime($event->getStart(), "d/m/Y H:i"); 
+                            }
+                        ?>
+                    </span>
+                    &nbsp;
+                    <span class="label label-danger">
+                        <?php 
+                            if($event->getEnd()){
+                                echo $this->datetime($event->getEnd(), "d/m/Y H:i"); 
+                            }
+                        ?>
+                    </span>
+                    &nbsp;
+                    <?php if($event->getRecurrence()): ?>
+                        <div class="label label-default"><?php echo $this->googlecalendarrecurrence($event->getStart(), $event->getEnd(), $event->getRecurrence()) ?></div>
+                    <?php endif; ?>
+                    <br/><br/>
+                    <p><?php echo $event->getDescription()?></p>
+                    
+                </div>
+                <div class="col-lg-4">
+                    <?php echo $this->createMap(array('latitude' => $event->getLatitude(), 'longitude' => $event->getLongitude()), 15); ?>
+                    <small><i class="fa fa-location-arrow"></i> <?php echo $event->getLocation()?></small>
+                </div>
+                <div class="clearfix"></div>
+            </li>
+        <?php endif; ?>
+    <?php endforeach;?>
+    </ul>
+<?php elseif(is_string($this->events)): ?>
+      <div class="alert alert-danger"><?php echo $this->events ?></div>
+<?php endif; ?>  
+

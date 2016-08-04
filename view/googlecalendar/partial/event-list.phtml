@@ -1,0 +1,63 @@
+
+<?php if(is_object($this->events) && is_object($this->profile)): ?>
+    <h3><?php echo $this->translate('Your Google Calendar Events') ?> <small><?php echo $this->translate('Synced events')?></small></h3>
+    <p><?php echo $this->translate('Here you can see events that we will be synced every 5 minutes')?></p>
+    
+    <div class="table-responsive">
+        <table class="table table-condensed table-hover">
+            <tbody>
+                <?php foreach ($this->events as $event): ?>
+                    <?php if("cancelled" != $event->getStatus()): ?>
+                        <tr title="<?php echo sprintf($this->translate('Updated at %s'), $this->datetime($event->getUpdated(), "d/m/Y H:i")) ?>">
+                            <td>
+                                <i class="fa fa-calendar"></i>
+                                <?php echo $event->getSummary() ?>
+                                <?php if($event->getRecurrence()): ?>
+                                    <br/><small><?php echo $this->googlecalendarrecurrence($event->getStart(), $event->getEnd(), $event->getRecurrence()) ?></small>
+                                <?php endif; ?>
+                                <?php if($event->getLocation()): ?>
+                                    <br/><small><i class="fa fa-location-arrow"></i> <?php echo $event->getLocation()?></small>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <span class="label label-success"><i class="fa fa-clock-o"></i>
+                                    <?php 
+                                        if($event->getStart()){
+                                            echo $this->datetime($event->getStart(), "d/m/Y H:i"); 
+                                        }
+                                    ?>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="label label-success"><i class="fa fa-clock-o"></i>
+                                    <?php 
+                                        if($event->getEnd()){
+                                            echo $this->datetime($event->getEnd(), "d/m/Y H:i"); 
+                                        }
+                                    ?>
+                                </span>
+                            </td>
+                            <td>
+                                <?php if ($event->getNote()): ?>
+                                    <?php $notes = json_decode($event->getNote(), true); ?>
+                                    <?php foreach ($notes as $note): ?>
+                                        <?php foreach ($note as $alertType => $message): ?>
+                                            <span class="label label-<?php echo $alertType?>"><?php echo $message ?></span><br/>
+                                        <?php endforeach;?>
+                                    <?php endforeach;?>
+                                <?php else: ?>
+                                    <span class="label label-info"><?php echo $this->translate('Waiting the confirm ... hold on!')?></span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                
+                     <?php endif; ?>
+                  
+                <?php endforeach;?>
+            </tbody>
+        </table>
+    </div>
+<?php elseif(is_string($this->events)): ?>
+      <div class="alert alert-danger"><?php echo $this->events ?></div>
+<?php endif; ?>  
+
